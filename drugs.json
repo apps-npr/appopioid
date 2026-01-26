@@ -1,0 +1,31 @@
+[
+  { "id": "mo_ir", "name": "Morphine IR", "strength": 10, "unit": "mg", "form": "tab", "type": "strong", "can_feed": true, "onset": "15-30 min", "tmax": "30-90 min", "duration": "4 hr", "image": "mir.png" },
+  { "id": "mo_syr", "name": "Morphine Syrup", "strength": 2, "unit": "mg/ml", "form": "liquid", "type": "strong", "can_feed": true, "onset": "15-30 min", "tmax": "30-90 min", "duration": "4 hr", "image": "msyr.png" },
+  { "id": "mo_inj", "name": "Morphine Injection", "strength": 10, "unit": "mg/ml", "form": "amp", "type": "strong", "can_feed": false, "note": "ยาฉีด (Injection)", "onset": "5-20 min", "tmax": "30-60 min", "duration": "3-4 hr", "image": "minj.png" },
+  
+  { "id": "mst", "name": "MST (Morphine SR)", "strength": 10, "unit": "mg", "form": "tab_sr", "type": "strong", "can_feed": false, "note": "ห้ามบด/เคี้ยว", "onset": "3-4 hr", "tmax": "2-4 hr", "duration": "8-12 hr", "image": "mst10.png" },
+  { "id": "mst_30", "name": "MST (Morphine SR)", "strength": 30, "unit": "mg", "form": "tab_sr", "type": "strong", "can_feed": false, "note": "ห้ามบด/เคี้ยว", "onset": "3-4 hr", "tmax": "2-4 hr", "duration": "8-12 hr", "image": "mst30.png" },
+  { "id": "mst_60", "name": "MST (Morphine SR)", "strength": 60, "unit": "mg", "form": "tab_sr", "type": "strong", "can_feed": false, "note": "ห้ามบด/เคี้ยว", "onset": "3-4 hr", "tmax": "2-4 hr", "duration": "8-12 hr", "image": "mst60.png" },
+  { "id": "mst_100", "name": "MST (Morphine SR)", "strength": 100, "unit": "mg", "form": "tab_sr", "type": "strong", "can_feed": false, "note": "ห้ามบด/เคี้ยว", "onset": "3-4 hr", "tmax": "2-4 hr", "duration": "8-12 hr", "image": "mst100.png" },
+  { "id": "mst_200", "name": "MST (Morphine SR)", "strength": 200, "unit": "mg", "form": "tab_sr", "type": "strong", "can_feed": false, "note": "ห้ามบด/เคี้ยว", "onset": "3-4 hr", "tmax": "2-4 hr", "duration": "8-12 hr", "image": "mst200.png" },
+
+  { "id": "kapanol_10", "name": "Kapanol", "strength": 10, "unit": "mg", "form": "cap_sr", "type": "strong", "can_feed": true, "note": "แกะแคปซูลผสมน้ำได้", "onset": "Slow", "tmax": "7-9 hr", "duration": "24 hr", "image": "k10.png" },
+  { "id": "kapanol_20", "name": "Kapanol", "strength": 20, "unit": "mg", "form": "cap_sr", "type": "strong", "can_feed": true, "note": "แกะแคปซูลผสมน้ำได้", "onset": "Slow", "tmax": "7-9 hr", "duration": "24 hr", "image": "k20.png" },
+  { "id": "kapanol_50", "name": "Kapanol", "strength": 50, "unit": "mg", "form": "cap_sr", "type": "strong", "can_feed": true, "note": "แกะแคปซูลผสมน้ำได้", "onset": "Slow", "tmax": "7-9 hr", "duration": "24 hr", "image": "k50.png" },
+  { "id": "kapanol_100", "name": "Kapanol", "strength": 100, "unit": "mg", "form": "cap_sr", "type": "strong", "can_feed": true, "note": "แกะแคปซูลผสมน้ำได้", "onset": "Slow", "tmax": "7-9 hr", "duration": "24 hr", "image": "k100.png" },
+
+  { "id": "fentanyl_12", "name": "Fentanyl Patch", "strength": 12, "unit": "mcg/hr", "form": "patch", "type": "strong", "can_feed": false, "note": "แผ่นแปะ (Transdermal)", "onset": "12-24 hr", "tmax": "24-72 hr", "duration": "72 hr", "image": "fp12.png" },
+  { "id": "fentanyl_25", "name": "Fentanyl Patch", "strength": 25, "unit": "mcg/hr", "form": "patch", "type": "strong", "can_feed": false, "note": "แผ่นแปะ (Transdermal)", "onset": "12-24 hr", "tmax": "24-72 hr", "duration": "72 hr", "image": "fp25.png" },
+  { "id": "fentanyl_50", "name": "Fentanyl Patch", "strength": 50, "unit": "mcg/hr", "form": "patch", "type": "strong", "can_feed": false, "note": "แผ่นแปะ (Transdermal)", "onset": "12-24 hr", "tmax": "24-72 hr", "duration": "72 hr", "image": "fp50.png" },
+  { "id": "fentanyl_75", "name": "Fentanyl Patch", "strength": 75, "unit": "mcg/hr", "form": "patch", "type": "strong", "can_feed": false, "note": "แผ่นแปะ (Transdermal)", "onset": "12-24 hr", "tmax": "24-72 hr", "duration": "72 hr", "image": "fp75.png" },
+  { "id": "fentanyl_100", "name": "Fentanyl Patch", "strength": 100, "unit": "mcg/hr", "form": "patch", "type": "strong", "can_feed": false, "note": "แผ่นแปะ (Transdermal)", "onset": "12-24 hr", "tmax": "24-72 hr", "duration": "72 hr", "image": "fp100.png" },
+  
+  { "id": "fentanyl_inj_100", "name": "Fentanyl Injection", "strength": 100, "unit": "mcg/2ml", "form": "amp", "type": "strong", "can_feed": false, "note": "ยาฉีด (Injection)", "onset": "Immediate", "tmax": "15 min", "duration": "0.5-1 hr", "image": "f100.png" },
+  { "id": "fentanyl_inj_500", "name": "Fentanyl Injection", "strength": 500, "unit": "mcg/10ml", "form": "amp", "type": "strong", "can_feed": false, "note": "ยาฉีด (Injection)", "onset": "Immediate", "tmax": "15 min", "duration": "0.5-1 hr", "image": "f500.png" },
+
+  { "id": "pethidine_inj", "name": "Pethidine Injection", "strength": 50, "unit": "mg/ml", "form": "amp", "type": "strong", "can_feed": false, "note": "ยาฉีด (Injection)", "onset": "10-15 min", "tmax": "30-60 min", "duration": "2-4 hr", "image": "pinj.png" },
+
+  { "id": "tramadol", "name": "Tramadol", "strength": 50, "unit": "mg", "form": "cap", "type": "weak", "can_feed": true, "onset": "30-60 min", "tmax": "2 hr", "duration": "6-8 hr", "image": "tramadol.png" },
+  { "id": "codeine_15", "name": "Codeine", "strength": 15, "unit": "mg", "form": "tab", "type": "weak", "can_feed": true, "onset": "30 min", "tmax": "1 hr", "duration": "4-6 hr", "image": "c15.png" },
+  { "id": "codeine_30", "name": "Codeine", "strength": 30, "unit": "mg", "form": "tab", "type": "weak", "can_feed": true, "onset": "30 min", "tmax": "1 hr", "duration": "4-6 hr", "image": "c30.png" }
+]
