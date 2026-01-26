@@ -62,7 +62,7 @@ input[type="range"] { width: 100%; }
 .tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; }
 .tag.feed { background: var(--success-color); color: #333; }
 .tag.nofeed { background: var(--secondary-color); color: #333; }
-.tag.patch { background: #fab1a0; color: #333; }
+.tag.patch { background: #FFC067; color: #333; }
 .tag.inj { background: #A0C4FF; color: #333; }
 
 /* Assessment Visuals */
