@@ -74,7 +74,7 @@ function renderDrugList(data) {
         if (drug.form === 'patch' || (drug.note && drug.note.includes('แผ่นแปะ'))) { 
             tagClass = 'patch'; tagText = drug.note || 'แผ่นแปะ'; 
         } else if (drug.form === 'amp' || (drug.note && drug.note.includes('ยาฉีด'))) {
-            tagClass = 'patch'; tagText = 'ยาฉีด'; // Re-use patch style for injection
+            tagClass = 'inj'; tagText = 'ยาฉีด';
         } else if (!drug.can_feed) { 
             tagClass = 'nofeed'; tagText = drug.note || 'ห้ามบด'; 
         } else if (drug.note) {
