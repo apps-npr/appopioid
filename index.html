@@ -20,7 +20,7 @@
         <button class="tab-btn" onclick="switchTab('assess')"><i class="fas fa-stethoscope"></i> ประเมิน</button>
         <button class="tab-btn" onclick="switchTab('convert')"><i class="fas fa-exchange-alt"></i> เทียบยา</button>
         <button class="tab-btn" onclick="switchTab('manage')"><i class="fas fa-user-md"></i> รักษา</button>
-        <button class="tab-btn" onclick="switchTab('counsel')"><i class="fas fa-comments"></i> คำแนะนำ</button>
+        <button class="tab-btn" onclick="switchTab('counsel')"><i class="fas fa-book-medical"></i> ข้อมูล</button>
     </nav>
 
     <main class="container">
@@ -68,20 +68,20 @@
             </div>
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h4>2. NIPS (Neonatal Infant Pain Scale) (เด็กแรกเกิด - 1 ปี)</h4>
+                    <h4>2. NIPS (เด็กแรกเกิด - 1 ปี)</h4>
                     <button class="action-btn sm" onclick="openModal('nips-modal')">📝 ประเมิน NIPS</button>
                 </div>
                 <div class="img-placeholder"><img src="NIPS.png" alt="NIPS Table"></div>
             </div>
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h4>3. CHEOPS (The Children's Hospital of Eastern Ontario Pain Scale) (เด็ก 1-6 ปี)</h4>
+                    <h4>3. CHEOPS (เด็ก 1-6 ปี)</h4>
                     <button class="action-btn sm" onclick="openModal('cheops-modal')">📝 ประเมิน CHEOPS</button>
                 </div>
                 <div class="img-placeholder"><img src="CHEOPS.png" alt="CHEOPS Table"></div>
             </div>
             <div class="card">
-                <h4>4. ผู้ป่วยวิกฤต (ICU / ใส่ท่อช่วยหายใจ)</h4>
+                <h4>4. ผู้ป่วยวิกฤต (ICU)</h4>
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
                     <button class="action-btn sm" onclick="openModal('bps-modal')">📝 ประเมิน BPS</button>
                     <button class="action-btn sm" onclick="openModal('cpot-modal')">📝 ประเมิน CPOT</button>
@@ -147,14 +147,12 @@
         <section id="manage" class="tab-content">
             <div class="card">
                 <h3>1. ข้อมูลผู้ป่วย</h3>
-                
                 <div class="form-group checkbox-group" style="background:#f0f7ff; padding:10px; border-radius:8px; margin-bottom:15px;">
                     <label style="font-weight:500; color:#0984e3;">
                         <input type="checkbox" id="manual-mode-toggle" onchange="toggleManualMode()"> 
                         ระบุ OME เป้าหมายเอง (Manual Target OME)
                     </label>
                 </div>
-
                 <div id="auto-input-section">
                     <div class="form-group">
                         <label>Pain Score (0-10)</label>
@@ -180,15 +178,12 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="manual-input-section" class="hidden">
                     <div class="form-group">
                         <label>ระบุ Total Daily OME ที่ต้องการ (mg/day)</label>
                         <input type="number" id="manual-ome-input" placeholder="เช่น 80 (มาจาก ATC+Rescue)">
-                        <small style="color:#666">ระบุผลรวมของ ATC และ Rescue dose ใน 24 ชม. ที่ผ่านมา</small>
                     </div>
                 </div>
-
             </div>
 
             <div class="card pastel-yellow">
@@ -209,14 +204,27 @@
             <div id="mg-result" class="hidden">
                 <div id="non-opioid-card" class="card pastel-blue hidden">
                     <h3>คำแนะนำ (Step 1: Mild Pain)</h3>
-                    <p>พิจารณาให้ยาแก้ปวดกลุ่ม Non-Opioids (Para/NSAIDs)</p>
+                    <p>พิจารณาให้ยาแก้ปวดกลุ่ม Non-Opioids:</p>
+                    <ul style="padding-left:20px; line-height:1.6; margin-bottom:10px;">
+                        <li><strong>Paracetamol:</strong> 500 mg q 4-6 hr (Max 4g/day)</li>
+                        <li><strong>Ibuprofen:</strong> 400 mg q 8 hr (pc)</li>
+                        <li><strong>Naproxen:</strong> 250 mg q 12 hr (pc)</li>
+                        <li><strong>Diclofenac:</strong> 25 mg q 8 hr (pc)</li>
+                    </ul>
                     <button class="action-btn danger" style="margin-top:10px" onclick="forceModerate()">อาการไม่ดีขึ้น? ปรับเป็น Step 2</button>
                 </div>
+
                  <div id="weak-opioid-card" class="card pastel-yellow hidden">
                     <h3>คำแนะนำ (Step 2: Moderate Pain)</h3>
-                    <p>พิจารณาให้ <strong>Weak Opioids</strong> (Tramadol/Codeine)</p>
+                    <p>พิจารณาให้ <strong>Weak Opioids</strong> ร่วมกับ Non-Opioids:</p>
+                    <ul style="padding-left:20px; line-height:1.6; margin-bottom:10px;">
+                        <li><strong>Tramadol:</strong> 50-100 mg q 6-8 hr (Max 400mg/day)</li>
+                        <li><strong>Codeine:</strong> 30-60 mg q 4-6 hr (Max 240mg/day)</li>
+                        <li><em>*ระวังการใช้ร่วมกัน (Serotonin Syndrome / Constipation)</em></li>
+                    </ul>
                     <button class="action-btn danger" style="margin-top:10px" onclick="forceSevere()">อาการไม่ดีขึ้น? ปรับเป็น Step 3</button>
                 </div>
+
                 <div id="opioid-regimen-card" class="hidden">
                     <div class="card pastel-green">
                         <h3>3. แนะนำการรักษา (Step 3: Severe Pain)</h3>
@@ -233,11 +241,10 @@
                             <input type="number" id="dispense-days" value="14" oninput="updateDispensing()">
                         </div>
                         <div class="quick-days">
-                            <button onclick="setDays(14)">14 day</button>
-                            <button onclick="setDays(28)">28 day</button>
-                            <button onclick="setDays(56)">56 day</button>
-                            <button onclick="setDays(84)">84 day</button>
-                            <button onclick="setDays(112)">112 day</button>
+                            <button onclick="setDays(14)">14d</button>
+                            <button onclick="setDays(28)">28d</button>
+                            <button onclick="setDays(56)">56d</button>
+                            <button onclick="setDays(84)">84d</button>
                         </div>
                         <div id="dispense-list" class="dispense-box"></div>
                     </div>
@@ -246,26 +253,53 @@
         </section>
 
         <section id="counsel" class="tab-content">
-            <h3 class="section-title">คำแนะนำสำหรับผู้ป่วย (Patient Counseling)</h3>
+            <h3 class="section-title">ข้อมูลและคำแนะนำ (Resources)</h3>
             
+            <div class="card" style="border-left: 5px solid #ff7675;">
+                <h4>🚑 Naloxone Protocol (แก้พิษ Opioid)</h4>
+                <p><strong>ข้อบ่งชี้:</strong> Sedation Score 3 (ปลุกไม่ตื่น), RR &lt; 8/min, Pinpoint pupils</p>
+                <div style="background:#fff0f0; padding:10px; border-radius:8px; margin-top:5px;">
+                    <p><strong>วิธีผสม (Dilution):</strong></p>
+                    <p>Naloxone 1 amp (0.4 mg) + NSS 9 ml <br>= <strong>10 ml (0.04 mg/ml)</strong></p>
+                    <hr style="border-top:1px dashed #ccc; margin:5px 0;">
+                    <p><strong>วิธีบริหารยา (Administration):</strong></p>
+                    <p>IV <strong>1-2 ml (0.04-0.08 mg)</strong> ทุก 2-3 นาที</p>
+                    <p><em>*สังเกตอาการจนกว่าจะตื่นและหายใจได้เอง (Target RR > 10)</em></p>
+                </div>
+            </div>
+
             <div class="card">
-                <h4><i class="fas fa-exclamation-circle"></i> อาการข้างเคียงที่พบบ่อย</h4>
-                <ul style="padding-left:20px; line-height:1.6;">
-                    <li><strong>ท้องผูก (Constipation):</strong> พบบ่อยมาก ควรดื่มน้ำมากๆ และรับประทานยาระบาย (เช่น Senokot, Bisacodyl) ควบคู่ไปด้วยเสมอ</li>
-                    <li><strong>คลื่นไส้/อาเจียน:</strong> มักพบในช่วง 3-5 วันแรกที่เริ่มยา อาการจะค่อยๆ ดีขึ้นเอง หากมีอาการมากให้ทานยาแก้คลื่นไส้ (เช่น Metoclopramide)</li>
-                    <li><strong>ง่วงซึม/มึนงง:</strong> มักพบในช่วงแรกของการปรับยา ควรระวังการลุกเดิน ห้ามขับรถหรือทำงานกับเครื่องจักร</li>
-                </ul>
+                <h4>🧠 Adjuvant Analgesics (ยาแก้ปวดเสริม)</h4>
+                <table class="simple-table" style="font-size:0.85rem;">
+                    <tr><th>กลุ่มยา</th><th>ตัวยา</th><th>ขนาดเริ่มต้น</th></tr>
+                    <tr><td><strong>Anticonvulsant</strong><br>(Neuropathic)</td><td>Gabapentin<br>Pregabalin</td><td>300 mg hs<br>75 mg hs</td></tr>
+                    <tr><td><strong>TCA</strong><br>(Neuropathic)</td><td>Amitriptyline<br>Nortriptyline</td><td>10-25 mg hs<br>10-25 mg hs</td></tr>
+                    <tr><td><strong>Steroid</strong><br>(Bone/Liver/ICP)</td><td>Dexamethasone</td><td>4-8 mg OD/BID</td></tr>
+                    <tr><td><strong>Antispasmodic</strong><br>(Colic)</td><td>Hyoscine</td><td>10 mg q 6-8h</td></tr>
+                </table>
             </div>
 
             <div class="card pastel-yellow">
-                <h4><i class="fas fa-pills"></i> วิธีการใช้ยา</h4>
+                <h4>💩 Bowel Regimen (ป้องกันท้องผูก)</h4>
+                <p style="font-size:0.9rem; color:#666;">ควรสั่งจ่ายคู่กับ Opioids เสมอ</p>
                 <ul style="padding-left:20px; line-height:1.6;">
-                    <li><strong>ยาเม็ด MST / Kapanol:</strong> เป็นยาออกฤทธิ์ยาว ห้ามหัก ห้ามบด ห้ามเคี้ยว (Kapanol แกะแคปซูลได้แต่ห้ามบดยาข้างใน)</li>
-                    <li><strong>แผ่นแปะ Fentanyl:</strong> แปะบริเวณผิวหนังที่แห้งและเรียบ (เช่น หน้าอก, ต้นแขน) เปลี่ยนแผ่นใหม่ทุก 72 ชั่วโมง (3 วัน) หากแผ่นหลุดให้แปะแผ่นใหม่ทันที</li>
-                    <li><strong>ยาแก้ปวดฉุกเฉิน (Rescue Dose):</strong> ทานเพิ่มเมื่อมีอาการปวดรุนแรงแทรกซ้อนขึ้นมา สามารถทานซ้ำได้ทุก 2-4 ชั่วโมง</li>
+                    <li><strong>Stimulant:</strong> Senokot 2 tabs hs หรือ Bisacodyl 5-10 mg hs</li>
+                    <li><strong>Osmotic:</strong> MOM 30 ml hs หรือ Lactulose 15-30 ml hs</li>
+                    <li><em>*แนะนำให้ดื่มน้ำมากๆ และทานผักผลไม้</em></li>
                 </ul>
             </div>
 
+            <div class="card pastel-blue">
+                <h4><i class="fas fa-user-nurse"></i> คำแนะนำผู้ป่วย (Counseling)</h4>
+                <ul style="padding-left:20px; line-height:1.6;">
+                    <li><strong>คลื่นไส้/อาเจียน:</strong> มักเป็นแค่ 3-5 วันแรกที่เริ่มยา อาการจะค่อยๆ ดีขึ้นเอง หากมีอาการมากให้ทาน Metoclopramide หรือ Domperidone ก่อนอาหาร</li>
+                    <li><strong>ง่วงซึม:</strong> มักพบในช่วงแรกของการปรับยา ควรระวังการลุกเดิน ห้ามขับรถหรือทำงานกับเครื่องจักร</li>
+                    <li><strong>แผ่นแปะ Fentanyl:</strong> ห้ามตัดแผ่น, ห้ามโดนความร้อนจัด (กระเป๋าน้ำร้อน/ซาวน่า), แปะผิวหนังที่แห้งไม่มีขน เปลี่ยนแผ่นใหม่ทุก 72 ชั่วโมง (3 วัน) หากแผ่นหลุดให้แปะแผ่นใหม่ทันที</li>
+                    <li><strong>MST / Kapanol:</strong> เป็นยาออกฤทธิ์ยาว ห้ามหัก ห้ามบด ห้ามเคี้ยว (Kapanol แกะแคปซูลได้แต่ห้ามบดยาข้างใน)</li>
+                    <li><strong>ยาแก้ปวดฉุกเฉิน (Rescue Dose):</strong> ทานเพิ่มเมื่อมีอาการปวดรุนแรงแทรกซ้อนขึ้นมา สามารถทานซ้ำได้ทุก 2-4 ชั่วโมง</li>
+                </ul>
+            </div>
+            
             <div class="card pastel-pink">
                 <h4><i class="fas fa-ambulance"></i> สัญญาณอันตราย (รีบมาโรงพยาบาล)</h4>
                 <ul style="padding-left:20px; line-height:1.6;">
