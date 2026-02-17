@@ -167,9 +167,7 @@ function calculateConverter() {
     const safetyReduce = document.getElementById('conv-reduce').checked;
     
     let ome = 0;
-    // Updated Conversion Factors
     switch (drug) {
-        // Common
         case 'tramadol_po': ome = dose * 0.2; break; 
         case 'codeine_po': ome = dose * 0.15; break; 
         case 'morphine_po': ome = dose * 1; break;
@@ -177,8 +175,6 @@ function calculateConverter() {
         case 'hydromorphone_po': ome = dose * 5; break; 
         case 'oxycodone': ome = dose * 1.5; break; 
         case 'fentanyl_patch': ome = dose * 2.4; break; 
-
-        // Others
         case 'tramadol_inj': ome = (dose / 100) * 30; break; 
         case 'codeine_inj': ome = (dose / 120) * 30; break;
         case 'fentanyl_inj': ome = (dose * 1000 / 100) * 30; break; 
@@ -224,11 +220,9 @@ function calculateConverter() {
 // === NEW: Enhanced Management Logic (Combinations) ===
 
 function getCombinations(target, strengths, maxItems = 3) {
-    // Function to find drug combinations
     let results = [];
     
     function findCombo(currentCombo, currentSum) {
-        // Tolerance +- 15%
         if (currentSum >= target * 0.85 && currentSum <= target * 1.15) {
             results.push([...currentCombo]);
             return;
@@ -236,24 +230,20 @@ function getCombinations(target, strengths, maxItems = 3) {
         if (currentSum > target * 1.15 || currentCombo.length >= maxItems) return;
 
         for (let s of strengths) {
-            // Optimization: Only add if <= last added (to avoid dupes like 10+30 vs 30+10)
             if (currentCombo.length > 0 && s > currentCombo[currentCombo.length-1]) continue;
             findCombo([...currentCombo, s], currentSum + s);
         }
     }
     
-    // Sort strengths descending
     strengths.sort((a,b) => b - a);
     findCombo([], 0);
     
-    // Sort results by proximity to target
     results.sort((a,b) => {
         const sumA = a.reduce((x,y)=>x+y,0);
         const sumB = b.reduce((x,y)=>x+y,0);
         return Math.abs(target - sumA) - Math.abs(target - sumB);
     });
 
-    // Deduplicate and limit
     const uniqueResults = [];
     const seen = new Set();
     for (let res of results) {
@@ -263,7 +253,7 @@ function getCombinations(target, strengths, maxItems = 3) {
             uniqueResults.push(res);
         }
     }
-    return uniqueResults.slice(0, 4); // Top 4 options
+    return uniqueResults.slice(0, 4);
 }
 
 function calculateManagement() {
@@ -272,7 +262,6 @@ function calculateManagement() {
     const isRenal = document.getElementById('renal-toggle').checked;
     const eGFR = parseFloat(document.getElementById('mg-egfr').value) || 100;
     
-    // 1. Determine Target OME
     let targetOME = 0;
     let adjustInfo = "";
 
@@ -284,7 +273,6 @@ function calculateManagement() {
         const painScore = parseInt(document.getElementById('mg-pain').value);
         const currentStatus = document.getElementById('btn-naive').classList.contains('active') ? 'naive' : 'user';
         
-        // Show Step 1/2 cards
         const nonOpioidCard = document.getElementById('non-opioid-card');
         const weakOpioidCard = document.getElementById('weak-opioid-card');
         const opioidCard = document.getElementById('opioid-regimen-card');
@@ -308,7 +296,6 @@ function calculateManagement() {
         }
     }
 
-    // 2. Renal Adjustment
     let renalWarn = "";
     let renalFactor = 1.0;
     if (isRenal) {
@@ -317,45 +304,46 @@ function calculateManagement() {
     }
     const safeOME = targetOME * renalFactor;
 
-    // 3. Generate Options
     let optionsHTML = "";
     
-    // --- Kapanol (OD) Options ---
-    const kapStrengths = [100, 50, 20, 10]; // Added 10mg
+    // --- Kapanol Options ---
+    const kapStrengths = [100, 50, 20, 10]; 
     const kapCombos = getCombinations(safeOME, kapStrengths);
     
     kapCombos.forEach(combo => {
+        // Fix: Group identical items properly (e.g. 20+20 = 20x2)
         const counts = {};
         combo.forEach(x => counts[x] = (counts[x] || 0) + 1);
-        const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `Kapanol ${k} mg x ${counts[k]}`).join(" + ") + " OD";
+        const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `${k} mg x ${counts[k]}`).join(" + ") + " (OD)";
         const total = combo.reduce((a,b)=>a+b, 0);
         optionsHTML += createOptionCard('Kapanol', regimenText, `${total} mg/day`, renalFactor < 1);
     });
 
-    // --- MST (BID) Options ---
+    // --- MST Options ---
     if (!isFeed) {
-        const mstStrengths = [200, 100, 60, 30, 10]; // Added 200mg
+        const mstStrengths = [200, 100, 60, 30, 10]; 
         const targetBID = safeOME / 2;
         const mstCombos = getCombinations(targetBID, mstStrengths);
 
         mstCombos.forEach(combo => {
+            // Fix: Group identical items properly
             const counts = {};
             combo.forEach(x => counts[x] = (counts[x] || 0) + 1);
-            const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `MST ${k} mg x ${counts[k]}`).join(" + ") + " (BID)";
+            const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `${k} mg x ${counts[k]}`).join(" + ") + " (BID)";
             const total = combo.reduce((a,b)=>a+b, 0) * 2;
             optionsHTML += createOptionCard('MST', regimenText, `${total} mg/day`, renalFactor < 1);
         });
     }
 
     // --- Fentanyl Options ---
-    const fenStrengths = [100, 75, 50, 25, 12]; // Added 75, 100
+    const fenStrengths = [100, 75, 50, 25, 12]; 
     const targetFen = safeOME / 2.4;
     const fenCombos = getCombinations(targetFen, fenStrengths);
 
     fenCombos.forEach(combo => {
         const counts = {};
         combo.forEach(x => counts[x] = (counts[x] || 0) + 1);
-        const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `Fentanyl ${k} mcg/hr x ${counts[k]}`).join(" + ") + " q72h";
+        const regimenText = Object.keys(counts).sort((a,b)=>b-a).map(k => `${k} mcg/hr x ${counts[k]}`).join(" + ") + " q72h";
         const totalMcg = combo.reduce((a,b)=>a+b, 0);
         const totalOME = (totalMcg * 2.4).toFixed(0);
         optionsHTML += createOptionCard('Fentanyl Patch', regimenText, `~${totalOME} mg OME`, false);
@@ -366,7 +354,7 @@ function calculateManagement() {
         <small>${adjustInfo}</small><br>
         <small style="color:red">${renalWarn}</small>
     `;
-    document.getElementById('rec-options').innerHTML = optionsHTML || "<p>Please consult specialist (Out of range)</p>";
+    document.getElementById('rec-options').innerHTML = optionsHTML || "<p>Please consult specialist</p>";
     
     if(document.querySelector('.option-item')) selectOption(document.querySelector('.option-item'));
 }
@@ -377,7 +365,7 @@ function createOptionCard(name, regimen, total, isRenal) {
             <strong>${name}</strong>
             <span class="badge" style="background:${isRenal?'#ff7675':'#74b9ff'}">${isRenal?'Renal Adj':'Std'}</span>
         </div>
-        <p>${regimen}</p>
+        <p>${name} ${regimen}</p>
         <small>Total: ${total}</small>
     </div>`;
 }
@@ -397,7 +385,7 @@ function updateDispensing() {
     let dispenseHTML = `<p><strong>1. ATC:</strong> ${currentRegimen.name} <br> ${currentRegimen.regimen}</p>`;
     let atcTotalDailyMg = 0;
 
-    // Parse Regimen
+    // Smart Parsing for combo regimens
     const regex = /(\d+)\s*(mg|mcg\/hr)\s*x\s*(\d+)/g;
     let match;
     let totalItems = {}; 
@@ -411,7 +399,7 @@ function updateDispensing() {
         const unit = match[2];
         const countPerDose = parseInt(match[3]);
         
-        const key = `${strength} ${unit}`;
+        const key = `${currentRegimen.name} ${strength} ${unit}`;
         
         let totalQty = 0;
         if (unit.includes("mcg")) {
@@ -425,25 +413,31 @@ function updateDispensing() {
         totalItems[key] = (totalItems[key] || 0) + totalQty;
     }
 
+    // Render individual drug dispense amounts
     for (let [key, qty] of Object.entries(totalItems)) {
         let unitText = key.includes("mcg") ? "patches" : "tabs/caps";
-        dispenseHTML += `<p class="text-highlight">👉 Dispense (${key}): ${qty} ${unitText}</p>`;
+        dispenseHTML += `<p class="text-highlight" style="margin-left:15px; border-left:3px solid #0984e3; padding-left:10px;">👉 Dispense ${key}: ${qty} ${unitText}</p>`;
     }
 
-    // Rescue Logic
-    const rescueTotalMg = atcTotalDailyMg * 0.15; 
-    const rescueVol = rescueTotalMg / 2; 
-    const estimatedMlNeeded = rescueVol * 4 * days; 
+    // Fix: Rescue Logic (1/6 of Daily OME matches standard table)
+    const rescueTotalMg = atcTotalDailyMg / 6; 
+    
+    // Fix: Round rescue dose to nearest 0.5 ml for easier measuring
+    let rescueVol = Math.round((rescueTotalMg / 2) * 2) / 2; 
+    if (rescueVol < 1 && atcTotalDailyMg > 0) rescueVol = 1; // Minimum 1ml
+    
+    const finalRescueMg = rescueVol * 2;
+    const estimatedMlNeeded = rescueVol * 4 * days; // Assume 4 doses/day
     const btpBottles = Math.ceil(estimatedMlNeeded / 60);
 
-    const sigText = `${rescueVol.toFixed(1)} ml (${rescueTotalMg.toFixed(1)} mg) q 2-4 hr prn`;
+    const sigText = `${rescueVol.toFixed(1)} ml (${finalRescueMg.toFixed(0)} mg) q 2-4 hr prn`;
 
     list.innerHTML = `
         ${dispenseHTML}
         <hr>
         <p><strong>2. Rescue:</strong> Morphine Syr (10mg/5ml)</p>
         <p>Sig: ${sigText}</p>
-        <p class="text-highlight">👉 Dispense: ${btpBottles} Bottles (60ml)</p>
+        <p class="text-highlight" style="margin-left:15px; border-left:3px solid #0984e3; padding-left:10px;">👉 Dispense: ${btpBottles} Bottles (60ml)</p>
     `;
 }
 
